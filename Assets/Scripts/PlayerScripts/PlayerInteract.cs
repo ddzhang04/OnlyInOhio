@@ -40,8 +40,9 @@ public class PlayerInteract : MonoBehaviour
         // Added Layer 6 in Unity - Interactable
         // Assigned the Doors the Interactable Layer
         if(Physics.Raycast(ray, out hitInfo, distance, mask)) {
+
             // If interacting with an interactable object
-            if(hitInfo.collider.GetComponent<Interactable>().promptMessage != null)
+            if(hitInfo.collider.GetComponent<Interactable>() != null)
             {
                 Interactable interactable = hitInfo.collider.GetComponent<Interactable>();
  
@@ -52,7 +53,17 @@ public class PlayerInteract : MonoBehaviour
                 {
                     interactable.BaseInteract();
                 }
+            // Parent is interactable
+            } else if (hitInfo.collider.GetComponentInParent<Interactable>()) {
+                Interactable interactable = hitInfo.collider.GetComponentInParent<Interactable>();
+ 
+                // Update text 
+                playerUI.UpdateText(interactable.promptMessage);
             
+                if (inputManager.OnFoot.Interact.triggered)
+                {
+                    interactable.BaseInteract();
+                }
             }
         }
     }
