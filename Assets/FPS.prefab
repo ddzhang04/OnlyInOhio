@@ -12,8 +12,10 @@ GameObject:
   - component: {fileID: 6248991552194033322}
   - component: {fileID: 8916778466729381989}
   - component: {fileID: 3165241983831115105}
-  - component: {fileID: 7479715936429898855}
   - component: {fileID: 1225734953756255038}
+  - component: {fileID: 3589287488147184637}
+  - component: {fileID: 4616756960744441697}
+  - component: {fileID: 3286449406628727145}
   m_Layer: 0
   m_Name: FPS
   m_TagString: Untagged
@@ -110,26 +112,6 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &7479715936429898855
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 191174482554618835}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 104a648bcf651440887858c1fdf966a4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  walkingSpeed: 7.5
-  runningSpeed: 11.5
-  jumpSpeed: 3.57
-  gravity: 9.08
-  playerCamera: {fileID: 3570375874040526590}
-  lookSpeed: 4
-  lookXLimit: 45
-  canMove: 1
 --- !u!143 &1225734953756255038
 CharacterController:
   m_ObjectHideFlags: 0
@@ -156,6 +138,50 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &3589287488147184637
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 191174482554618835}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42b0e6077c5fe425397d31bc49e9f5a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4616756960744441697
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 191174482554618835}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99cf6f67fab48419ebba16a5ab9bd868, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 4
+  isGrounded: 0
+  gravity: -9.8
+  jumpHeight: 0.5
+--- !u!114 &3286449406628727145
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 191174482554618835}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8f8a6db5af8e4880955edb729cb2f77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cam: {fileID: 3570375874040526590}
+  yRotation: 0
+  xSensitivity: 30
+  ySensitivity: 30
 --- !u!1 &3961807585843819006
 GameObject:
   m_ObjectHideFlags: 0
@@ -169,7 +195,7 @@ GameObject:
   - component: {fileID: 6850952503383399532}
   - component: {fileID: 6074013112197897807}
   m_Layer: 0
-  m_Name: Main Camera
+  m_Name: Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
