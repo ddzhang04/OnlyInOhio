@@ -2,12 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SkibidiToilet : Interactable
+public class ToiletAnswer : Interactable
 {
     [SerializeField]
-    private GameObject toiletSign;
-
-    private bool signSpawned = false;
+    private SkibidiQuiz quiz;
     // Start is called before the first frame update
     void Start()
     {
@@ -22,10 +20,6 @@ public class SkibidiToilet : Interactable
 
     protected override void Interact()
     {
-        if(!signSpawned) {
-            signSpawned = true;
-            toiletSign.GetComponent<Animator>().SetBool("isRise", signSpawned);
-        }
-        
+        quiz.toiletAnswer = promptMessage;
     }
 }
