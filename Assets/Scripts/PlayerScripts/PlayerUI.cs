@@ -9,7 +9,12 @@ public class PlayerUI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        GameObject textObject = GameObject.Find("PromptText");
+        if (textObject != null)
+        {
+            promptText = textObject.GetComponent<TextMeshProUGUI>();
+            Debug.Log("PromptText found and assigned!");
+        }
     }
 
     // Update is called once per frame
