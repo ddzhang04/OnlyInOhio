@@ -15,6 +15,9 @@ public class SkibidiQuiz : Interactable
 
     [SerializeField]
     private GameObject backdoor;
+
+    [SerializeField]
+    private Fry fry;
     
     private string[] questions = {
         "Welcome to the AP Brain Rot Test.",
@@ -25,7 +28,7 @@ public class SkibidiQuiz : Interactable
         "Who is two steps ahead?",
         "What song was played at the Tiktok Rizz Party?",
         "Where was John Pork allegedly murdered?",
-        "GGs! You passed the brainrot quiz"
+        "GGs! You passed the brainrot quiz. Here's a fry"
     };
 
     private string[] leftToiletText = {
@@ -73,6 +76,7 @@ public class SkibidiQuiz : Interactable
             quizPassed = true;  
 
             backdoor.GetComponent<Animator>().SetBool("quizPassed", quizPassed);
+            fry.GetComponent<Animator>().SetBool("fryUnlocked", quizPassed);
         }
     }
 

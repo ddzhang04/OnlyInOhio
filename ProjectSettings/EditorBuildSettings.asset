@@ -5,7 +5,13 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Level 0.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/Scenes/McDonalds.unity
+    guid: e4b67375d67c548d4b5266b5b0b312db
+  - enabled: 1
+    path: Assets/Scenes/Level 1.unity
+    guid: 14012c8f5248b1348afc50c17ade010f
   m_configObjects: {}
