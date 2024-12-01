@@ -1,18 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class AUDIO : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public UnityEngine.AI.NavMeshAgent ai;
+    public Transform player;
+    Vector3 dest;
 
-    // Update is called once per frame
     void Update()
     {
-        
+        dest = player.position;
+        ai.destination = dest;
     }
 }
