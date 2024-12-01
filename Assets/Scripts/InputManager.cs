@@ -25,6 +25,8 @@ public class InputManager : MonoBehaviour
 
     private PlayerLook look;
 
+    private PlayerCollision playerCollision;
+
     private ScoreManager scoreManager;
 
     // Start is called before the first frame update
@@ -47,6 +49,7 @@ public class InputManager : MonoBehaviour
         gameManagement.Restart.performed += ctx => RestartGame();
 
         scoreManager = FindObjectOfType<ScoreManager>();
+        playerCollision = FindAnyObjectByType<PlayerCollision>();
     }
 
     // Update is called once per frame
@@ -72,7 +75,8 @@ public class InputManager : MonoBehaviour
 
     private void RestartGame()
     {
-        if (scoreManager != null && scoreManager.hasWon)
+        Debug.Log(playerCollision.CaseohTouched);
+        if (scoreManager != null && (scoreManager.hasWon || playerCollision.CaseohTouched))
         {
             SaveMe[] saveMeObjects = FindObjectsOfType<SaveMe>();
 
