@@ -23,7 +23,7 @@ public class tRAVIS : Interactable
     protected override void Interact()
     {
        
-    Application.OpenURL("https://www.epicgames.com/fortnite/en-US/news/travis-scott-astronomical");
+    Application.OpenURL("https://www.youtube.com/watch?v=wYeFAlVC8qU");
      
 
     }    
