@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Xml.Serialization;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class InputManager : MonoBehaviour
 {
@@ -16,20 +17,39 @@ public class InputManager : MonoBehaviour
         get => onFoot;
     }
 
+    private PlayerInput.GameManagementActions gameManagement;
+
+    public PlayerInput.GameManagementActions GameManagement{
+        get => gameManagement;
+    }
+
     private PlayerLook look;
+
+    private PlayerCollision playerCollision;
+
+    private ScoreManager scoreManager;
 
     // Start is called before the first frame update
     void Awake()
     {
         playerInput = new PlayerInput();
         onFoot = playerInput.OnFoot;   
+        gameManagement = playerInput.GameManagement;
+
         motor = GetComponent<PlayerMotor>();
         look = GetComponent<PlayerLook>();
+
 
         // ctx = callback context 
         // ctx calls Jump function
         // performed, started, canceled are the states of the function
         onFoot.Jump.performed += ctx => motor.Jump();
+
+        // Subscribe to the restart action
+        gameManagement.Restart.performed += ctx => RestartGame();
+
+        scoreManager = FindObjectOfType<ScoreManager>();
+        playerCollision = FindAnyObjectByType<PlayerCollision>();
     }
 
     // Update is called once per frame
@@ -45,10 +65,28 @@ public class InputManager : MonoBehaviour
 
     private void OnEnable() {
         onFoot.Enable();
+        gameManagement.Enable();
     }
 
     private void OnDisable() {
         onFoot.Disable();
+        gameManagement.Disable();
+    }
+
+    private void RestartGame()
+    {
+        Debug.Log(playerCollision.CaseohTouched);
+        if (scoreManager != null && (scoreManager.hasWon || playerCollision.CaseohTouched))
+        {
+            SaveMe[] saveMeObjects = FindObjectsOfType<SaveMe>();
+
+            // Destroy each GameObject that has the SaveMe script attached
+            foreach (SaveMe saveMe in saveMeObjects)
+            {
+                Destroy(saveMe.gameObject);
+            }
+            SceneManager.LoadScene(0);
+        }
     }
 
 }

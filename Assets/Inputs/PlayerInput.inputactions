@@ -648,6 +648,34 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "GameManagement",
+            "id": "9e26fe19-f379-4a32-aabf-24d3a8655dd0",
+            "actions": [
+                {
+                    "name": "Restart",
+                    "type": "Button",
+                    "id": "a38a1c76-c8b9-4d14-b570-26538e917649",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "f1997e8f-226e-4e1e-9f24-030adb82f438",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Restart",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []
