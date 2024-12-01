@@ -670,6 +670,34 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""GameManagement"",
+            ""id"": ""9e26fe19-f379-4a32-aabf-24d3a8655dd0"",
+            ""actions"": [
+                {
+                    ""name"": ""Restart"",
+                    ""type"": ""Button"",
+                    ""id"": ""a38a1c76-c8b9-4d14-b570-26538e917649"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""f1997e8f-226e-4e1e-9f24-030adb82f438"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Restart"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -692,6 +720,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_UI_RightClick = m_UI.FindAction("RightClick", throwIfNotFound: true);
         m_UI_TrackedDevicePosition = m_UI.FindAction("TrackedDevicePosition", throwIfNotFound: true);
         m_UI_TrackedDeviceOrientation = m_UI.FindAction("TrackedDeviceOrientation", throwIfNotFound: true);
+        // GameManagement
+        m_GameManagement = asset.FindActionMap("GameManagement", throwIfNotFound: true);
+        m_GameManagement_Restart = m_GameManagement.FindAction("Restart", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -937,6 +968,52 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         }
     }
     public UIActions @UI => new UIActions(this);
+
+    // GameManagement
+    private readonly InputActionMap m_GameManagement;
+    private List<IGameManagementActions> m_GameManagementActionsCallbackInterfaces = new List<IGameManagementActions>();
+    private readonly InputAction m_GameManagement_Restart;
+    public struct GameManagementActions
+    {
+        private @PlayerInput m_Wrapper;
+        public GameManagementActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Restart => m_Wrapper.m_GameManagement_Restart;
+        public InputActionMap Get() { return m_Wrapper.m_GameManagement; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(GameManagementActions set) { return set.Get(); }
+        public void AddCallbacks(IGameManagementActions instance)
+        {
+            if (instance == null || m_Wrapper.m_GameManagementActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_GameManagementActionsCallbackInterfaces.Add(instance);
+            @Restart.started += instance.OnRestart;
+            @Restart.performed += instance.OnRestart;
+            @Restart.canceled += instance.OnRestart;
+        }
+
+        private void UnregisterCallbacks(IGameManagementActions instance)
+        {
+            @Restart.started -= instance.OnRestart;
+            @Restart.performed -= instance.OnRestart;
+            @Restart.canceled -= instance.OnRestart;
+        }
+
+        public void RemoveCallbacks(IGameManagementActions instance)
+        {
+            if (m_Wrapper.m_GameManagementActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IGameManagementActions instance)
+        {
+            foreach (var item in m_Wrapper.m_GameManagementActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_GameManagementActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public GameManagementActions @GameManagement => new GameManagementActions(this);
     public interface IOnFootActions
     {
         void OnMovement(InputAction.CallbackContext context);
@@ -956,5 +1033,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         void OnRightClick(InputAction.CallbackContext context);
         void OnTrackedDevicePosition(InputAction.CallbackContext context);
         void OnTrackedDeviceOrientation(InputAction.CallbackContext context);
+    }
+    public interface IGameManagementActions
+    {
+        void OnRestart(InputAction.CallbackContext context);
     }
 }
