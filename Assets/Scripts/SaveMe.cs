@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SaveMe : MonoBehaviour
 {
-    private static GameObject[] persistentObjects = new GameObject[5];
+    private static GameObject[] persistentObjects = new GameObject[8];
     public int objectIndex; 
 
     // Start is called before the first frame update
