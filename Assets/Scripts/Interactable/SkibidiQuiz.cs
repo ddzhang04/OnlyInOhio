@@ -17,13 +17,15 @@ public class SkibidiQuiz : Interactable
 
     [SerializeField]
     private Fry fry;
-    
+
+    [SerializeField]
     private AudioSource audioSource; // Reference to the AudioSource component
 
     [SerializeField]
     private AudioClip wrongAnswerClip; // The sound to play when the answer is wrong
 
-    private bool wrongAnswerSoundPlayed = false; // Prevents repeated playback of the wrong answer sound
+    [SerializeField]
+    private AudioClip correctAnswerClip; // Optional sound for the correct answer
 
     private string[] questions = {
         "Welcome to the AP Brain Rot Test.",
@@ -55,54 +57,65 @@ public class SkibidiQuiz : Interactable
         ""
     };
 
-    // Correct answers
     private string[] answers = {
-        "Baby Gronk", // Baby Gronk
-        "Sigma", // Sigma
-        "Nico Avocado", // Nico Avocado
-        "Carnival", // Carnival
-        "Atlanta" // Atlanta
+        "Baby Gronk",
+        "Sigma",
+        "Nico Avocado",
+        "Carnival",
+        "Atlanta"
     };
 
-    // Start is called before the first frame update
     void Start()
     {
+        // Ensure the AudioSource is assigned
+        if (audioSource == null)
+        {
+            audioSource = GetComponent<AudioSource>();
+            if (audioSource == null)
+            {
+                Debug.LogError("AudioSource component is missing on SkibidiQuiz object.");
+            }
+        }
+
         promptMessage = questions[questionIdx];
     }
 
-    // Update is called once per frame
     void Update()
     {
         promptMessage = questions[questionIdx];
 
         if (questionIdx > 2 && questionIdx < 8)
         {
-            // Check if the answer is correct
-            if (toiletAnswer == answers[questionIdx - 3])
-            {
-                questionIdx++;
-                StartCoroutine(DelayAnswerDisplay(1f)); // 1-second delay before showing answers
-                wrongAnswerSoundPlayed = false; // Reset the flag for the next question
-                toiletAnswer = ""; // Clear the answer to avoid reuse
-            }
-            else if (toiletAnswer != "" && toiletAnswer != answers[questionIdx - 3] && !wrongAnswerSoundPlayed)
-            {
-                // Play wrong answer sound only once per wrong answer
-                PlayWrongAnswerSound();
-                wrongAnswerSoundPlayed = true;
-            }
+            HandleQuestion();
         }
         else if (questionIdx == 8 && !quizPassed)
         {
-            quizPassed = true;
-
-            // Play success animation or sound for passing the quiz
-            backdoor.GetComponent<Animator>().SetBool("quizPassed", quizPassed);
-            fry.GetComponent<Animator>().SetBool("fryUnlocked", quizPassed);
-
-            // Clear the text above the toilets after the quiz is complete
-            HideAnswers();
+            CompleteQuiz();
         }
+    }
+
+    private void HandleQuestion()
+    {
+        if (toiletAnswer == answers[questionIdx - 3])
+        {
+            PlayCorrectAnswerSound();
+            questionIdx++;
+            StartCoroutine(DelayAnswerDisplay(1f)); // 1-second delay before showing answers
+            toiletAnswer = ""; // Clear answer to avoid reuse
+        }
+        else if (!string.IsNullOrEmpty(toiletAnswer) && toiletAnswer != answers[questionIdx - 3])
+        {
+            PlayWrongAnswerSound();
+            toiletAnswer = ""; // Clear answer to prevent repeated wrong triggers
+        }
+    }
+
+    private void CompleteQuiz()
+    {
+        quizPassed = true;
+        backdoor.GetComponent<Animator>().SetBool("quizPassed", quizPassed);
+        fry.GetComponent<Animator>().SetBool("fryUnlocked", quizPassed);
+        HideAnswers();
     }
 
     protected override void Interact()
@@ -110,18 +123,13 @@ public class SkibidiQuiz : Interactable
         if (questionIdx < 3)
         {
             questionIdx++;
+            updateText();
         }
-
-        updateText();
     }
 
-    // Coroutine to add a delay before showing the answers
     private IEnumerator DelayAnswerDisplay(float delayTime)
     {
-        // Wait for the specified delay time (1 second)
         yield return new WaitForSeconds(delayTime);
-
-        // After the delay, update the toilet answer prompts
         updateText();
     }
 
@@ -134,16 +142,30 @@ public class SkibidiQuiz : Interactable
         }
     }
 
-    // Method to play the wrong answer sound
     private void PlayWrongAnswerSound()
     {
         if (audioSource != null && wrongAnswerClip != null)
         {
-            audioSource.PlayOneShot(wrongAnswerClip); // Play the sound when the player answers incorrectly
+            audioSource.PlayOneShot(wrongAnswerClip);
+        }
+        else
+        {
+            Debug.LogWarning("Wrong answer clip or AudioSource is missing.");
         }
     }
 
-    // Method to clear the text above the toilets after the quiz is complete
+    private void PlayCorrectAnswerSound()
+    {
+        if (audioSource != null && correctAnswerClip != null)
+        {
+            audioSource.PlayOneShot(correctAnswerClip);
+        }
+        else
+        {
+            Debug.LogWarning("Correct answer clip or AudioSource is missing.");
+        }
+    }
+
     private void HideAnswers()
     {
         if (leftToilet != null)
