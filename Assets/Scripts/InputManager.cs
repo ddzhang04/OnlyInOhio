@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Xml.Serialization;
@@ -76,6 +77,8 @@ public class InputManager : MonoBehaviour
     private void RestartGame()
     {
         Debug.Log(playerCollision.CaseohTouched);
+        Debug.Log(scoreManager.hasWon);
+
         if (scoreManager != null && (scoreManager.hasWon || playerCollision.CaseohTouched))
         {
             SaveMe[] saveMeObjects = FindObjectsOfType<SaveMe>();
